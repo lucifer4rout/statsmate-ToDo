@@ -5,6 +5,14 @@ StatsMate is a gamified productivity and daily task tracking application.
 It helps users track their daily tasks, earn XP, maintain streaks, unlock trophies, and view productivity statistics.
 
 StatsMate is built using **HTML, CSS, JavaScript, and Electron**.
+---
+
+# 📥 Installation
+
+1. Download **StatsMate Setup 1.0.0.exe** from the Assets section below in the release section on right.
+2. Run the installer.
+3. Complete the installation.
+4. Launch **StatsMate** from your Desktop or Start Menu.
 
 ---
 
