@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StatsMate — Daily Task Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sideui.css">
+</head>
+<body data-theme="dark">
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+<div class="bg-orb orb3"></div>
+<div class="grid-overlay"></div>
+
+<nav class="topnav">
+  <div class="brand-mini">StatsMate</div>
+  <a href="#dashboard">Dashboard</a>
+  <a href="#insights">Insights</a>
+  <a href="#trophies">Trophies</a>
+  <a href="#tasks">Tasks</a>
+  <div class="level-pill" id="navLevelPill">
+    <span class="lv-ring" id="navLvRing" style="background:var(--accent)">1</span>
+    <span class="lv-title" id="navLvTitle">Novice</span>
+  </div>
+</nav>
+
+<div class="content">
+<div class="wrap" id="dashboard">
+
+  <header class="top">
+    <div class="brand">
+      <h1><span>🏆</span> StatsMate</h1>
+      <p>Your daily tasks, tracked into streaks, XP, charts and trophies. Nothing leaves this browser.</p>
+    </div>
+    <div class="header-controls">
+      <button class="icon-btn" id="exportBtn">⤓ Backup</button>
+      <button class="icon-btn" id="importBtn">⤒ Restore</button>
+      <input type="file" id="importFile" accept="application/json">
+      <div class="theme-switch" id="themeSwitch">
+        <button data-mode="light">Light</button>
+        <button data-mode="dark">Dark</button>
+        <button data-mode="custom">Custom</button>
+        <input type="color" id="customColor" title="Pick your accent color" value="#3fb6a8">
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="glass side-card">
+        <div class="xp-ring-wrap">
+          <div class="xp-ring" id="xpRing"><div class="inner"><span class="lv" id="sideLevel">1</span><span class="lvlabel">Level</span></div></div>
+          <div class="rank-title" id="rankTitle">Novice</div>
+          <div class="xp-sub" id="xpSub">0 / 50 XP</div>
+        </div>
+        <div class="side-stat"><span>Total XP</span><span class="v" id="totalXp">0</span></div>
+        <div class="side-stat"><span>Lifetime completions</span><span class="v" id="lifetimeCompletions">0</span></div>
+        <div class="side-stat"><span>Longest streak</span><span class="v" id="sideLongest">0</span></div>
+        <div style="margin-top:6px;">
+          <div class="xp-sub" style="margin-bottom:0;">This week</div>
+          <div class="mini-week" id="miniWeek"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main-col">
+
+      <div class="stats-row">
+        <div class="glass stat-card">
+          <div class="label">Current Streak</div>
+          <div class="num flame" id="streakNum">0</div>
+          <div class="sub"><span id="streakSub">perfect days in a row</span> &middot; <span class="best-tag" id="bestStreak">best 0</span></div>
+        </div>
+        <div class="glass stat-card">
+          <div class="label">Today</div>
+          <div class="num mono" id="todayNum">0/0</div>
+          <div class="sub" id="todaySub">tasks completed</div>
+          <svg class="spark" id="sparkline" width="100%" height="26" viewBox="0 0 100 26" preserveAspectRatio="none"></svg>
+        </div>
+        <div class="glass stat-card">
+          <div class="label">This Week</div>
+          <div class="num mono" id="weekNum">0/7</div>
+          <div class="week-dots" id="weekDots"></div>
+        </div>
+        <div class="glass stat-card">
+          <div class="label">This Month</div>
+          <div class="num mono" id="monthNum">0/0</div>
+          <div class="month-bar"><i id="monthBar" style="width:0%"></i></div>
+        </div>
+      </div>
+
+      <section class="panel glass" id="insights">
+        <h2>Insights <span class="tag">live</span></h2>
+        <div class="insights-grid">
+          <div class="insight-block">
+            <h3>Today by Category</h3>
+            <div class="donut-wrap">
+              <div class="donut" id="catDonut"><div class="center-label"><span class="n" id="catDonutNum">0</span><span class="l">tasks</span></div></div>
+              <div class="legend" id="catLegend"></div>
+            </div>
+            <h3>Completion</h3>
+            <div class="donut-wrap">
+              <div class="ring donut" id="progRing"><div class="center-label"><span class="n" id="progRingNum">0%</span><span class="l">done</span></div></div>
+              <div class="legend">
+                <div class="row"><span class="dot" style="background:var(--accent)"></span><span class="cname">Completed</span></div>
+                <div class="row"><span class="dot" style="background:var(--surface-3)"></span><span class="cname">Remaining</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="insight-block">
+            <h3>Last 7 Days</h3>
+            <div class="bar-graph" id="barGraph"></div>
+            <h3 style="margin-top:20px;">Last 30 Days</h3>
+            <div class="heatmap" id="heatmap"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel glass" id="trophies">
+        <h2>Trophy Shelf <span class="count" id="trophyCount">0 / 0 unlocked</span></h2>
+        <div class="trophy-tabs" id="trophyTabs">
+          <button data-cat="all" class="active">All</button>
+          <button data-cat="streak">Streak</button>
+          <button data-cat="weekly">Weekly</button>
+          <button data-cat="monthly">Monthly</button>
+        </div>
+        <div class="shelf" id="shelf"></div>
+      </section>
+
+      <section class="panel glass" id="tasks">
+        <h2>Today's Tasks</h2>
+        <div class="add-row">
+          <input type="text" id="newTask" placeholder="Add a task…" maxlength="120">
+          <select id="newCat">
+            <option value="general">● General</option>
+            <option value="work">● Work</option>
+            <option value="health">● Health</option>
+            <option value="learning">● Learning</option>
+            <option value="personal">● Personal</option>
+          </select>
+          <button id="addBtn">Add</button>
+        </div>
+        <div class="filter-chips" id="filterChips">
+          <button data-filter="all" class="active">All</button>
+          <button data-filter="active">Active</button>
+          <button data-filter="done">Done</button>
+        </div>
+        <ul class="tasks" id="taskList"></ul>
+        <div class="empty" id="emptyMsg" style="display:none;">No tasks yet — add one above to start your streak.</div>
+      </section>
+
+      <footer class="credit">Data is stored only in this browser's local storage. Use Backup / Restore to move it elsewhere.</footer>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="sidemain.js"></script>
+</body>
+</html>

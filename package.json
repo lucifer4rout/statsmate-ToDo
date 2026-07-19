@@ -1,0 +1,43 @@
+{
+  "name": "statsmate",
+  "version": "1.0.0",
+  "description": "A gamified productivity app with XP, levels, streaks, trophies, and productivity insights.",
+  "main": "main.js",
+  "author": "lucifer4rout",
+  "license": "MIT",
+
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "dist": "electron-builder --publish never"
+  },
+
+  "devDependencies": {
+    "electron": "^37.1.0",
+    "electron-builder": "^26.0.12"
+  },
+
+  "build": {
+    "appId": "com.lucifer4rout.statsmate",
+    "productName": "StatsMate",
+
+    "asar": true,
+
+    "files": [
+      "**/*",
+      "!dist/**",
+      "!node_modules/.cache/**",
+      "!README.md",
+      "!LICENSE"
+    ],
+
+    "directories": {
+      "output": "dist"
+    },
+
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico"
+    }
+  }
+}
